@@ -1,7 +1,7 @@
 
 
 const users = [];
-
+let existingUser;
 
 const addUser = ({ id, name, room }) => {
     name = name.trim().toLowerCase()
@@ -9,7 +9,7 @@ const addUser = ({ id, name, room }) => {
 
 
 
-    const existingUser = users.find((user) => user.room === room && user.name === name);
+    let existingUser = users.find((user) => user.room === room && user.name === name);
 
 
     if (existingUser) {
@@ -48,5 +48,6 @@ module.exports = {
     getUser,
     getUserInRoom,
     addUser,
-    removeUser
+    removeUser,
+    existingUser
 }

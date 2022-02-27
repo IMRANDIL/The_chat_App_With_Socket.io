@@ -8,6 +8,8 @@ import closeIcon from '../../Icons/closeIcon.png';
 
 const InfoBar = ({ room }) => {
     return (
+
+
         <div className='infoBar'>
 
             <div className="leftInnerContainer">

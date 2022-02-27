@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom';
-import './Chat.css'
+import './Chat.css';
+
 
 // import queryString from 'query-string'
 
@@ -9,6 +10,7 @@ import io from 'socket.io-client'
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
 import Messages from '../Messages/Messages';
+import TextContainer from '../TextContainer/TextContainer';
 
 
 let socket;
@@ -18,6 +20,8 @@ const Chat = () => {
 
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
+
+    const [users, setUsers] = useState('');
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
 
@@ -41,9 +45,9 @@ const Chat = () => {
         setRoom(room);
 
         socket.emit('join', { name, room }, (error) => {
-            // if (error) {
-            //     alert(error);
-            // }
+            if (error) {
+                alert(error);
+            }
         })
 
 
@@ -62,14 +66,18 @@ const Chat = () => {
 
 
     useEffect(() => {
-        socket.on('message', (message) => {
+        socket.on('message', message => {
+            setMessages(messages => [...messages, message]);
+        });
 
-            setMessages([...messages, message])
 
 
+        socket.on("roomData", ({ users }) => {
+            setUsers(users);
+        });
 
-        })
-    }, [messages]);
+
+    }, []);
 
 
 
@@ -89,7 +97,7 @@ const Chat = () => {
 
 
 
-    console.log(message, messages);
+    // console.log(message, messages);
 
 
 
@@ -106,6 +114,7 @@ const Chat = () => {
                 <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
                 {/* <input value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} /> */}
             </div>
+            <TextContainer users={users} />
         </div>
     )
 }
