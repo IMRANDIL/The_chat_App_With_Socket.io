@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
 
-        cb(error)
+        cb()
 
     });
 

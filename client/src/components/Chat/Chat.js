@@ -20,20 +20,22 @@ const Chat = () => {
 
     const [searchParams] = useSearchParams();
 
-    const nameParams = searchParams.get('name');
-    const roomParams = searchParams.get('room')
+
     // const data = queryString.parse();
     const EndPoint = `localhost:5000`
 
     useEffect(() => {
+
+        const name = searchParams.get('name');
+        const room = searchParams.get('room');
 
 
         socket = io(EndPoint, { transports: ['websocket'] })
 
 
 
-        setName(nameParams);
-        setRoom(roomParams);
+        setName(name);
+        setRoom(room);
 
         socket.emit('join', { name, room }, (error) => {
             // if (error) {
@@ -47,10 +49,10 @@ const Chat = () => {
 
 
         return () => {
-            socket.on('disconnect')
+            socket.emit('disconnect')
             socket.off()
         }
-    }, [nameParams, roomParams, EndPoint, name, room]);
+    }, [searchParams, EndPoint]);
 
 
 
@@ -64,7 +66,7 @@ const Chat = () => {
 
 
         })
-    }, [messages, message]);
+    }, [messages]);
 
 
 
@@ -73,7 +75,7 @@ const Chat = () => {
 
 
     const sendMessage = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (message) {
             socket.emit('sendMessage', message, () => setMessage(''))
         }
