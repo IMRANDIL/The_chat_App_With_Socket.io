@@ -31,12 +31,13 @@ const server = http.createServer(app)
 const io = socketio(server);
 
 io.on('connection', (socket) => {
+
     socket.on('join', ({ name, room }, cb) => {
         const { error, user } = addUser({ id: socket.id, name, room });
+        console.log(user);
+        if (error) return cb(error);
 
-        if (error) {
-            return cb(error)
-        }
+
 
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to the room ${user.room}` });
 
@@ -44,8 +45,18 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
 
-        cb()
+        cb(error)
 
+    });
+
+    socket.on('sendMessage', (message, cb) => {
+        const user = getUser(socket.id);
+
+
+        io.to(user.room).emit('message', { user: user.name, text: message });
+
+
+        cb()
     })
 
 
