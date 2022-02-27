@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom';
-
+import './Chat.css'
 
 // import queryString from 'query-string'
 
 
 import io from 'socket.io-client'
+import InfoBar from '../InfoBar/InfoBar';
+import Input from '../Input/Input';
+import Messages from '../Messages/Messages';
 
 
 let socket;
@@ -94,11 +97,14 @@ const Chat = () => {
 
 
     return (
-        <div className='outContainer'>
+        <div className='outerContainer'>
 
 
             <div className='container'>
-                <input value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} />
+                <InfoBar room={room} />
+                <Messages messages={messages} name={name} />
+                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                {/* <input value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} /> */}
             </div>
         </div>
     )
