@@ -29,7 +29,7 @@ const Chat = () => {
 
 
     // const data = queryString.parse();
-    const EndPoint = `localhost:5000`
+    const EndPoint = `https://chatappbackend00134.herokuapp.com/`
 
     useEffect(() => {
 
